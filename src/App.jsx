@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect, Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import api from './utils/api';
 
 import store from './ducks/store';
-// import actions from './redux/actions';
-import { initialLoad, removePost } from './ducks/modules/posts';
+import { initialLoad, removePost, up, down } from './ducks/modules/posts';
 
 import PostsArea from './components/PostsArea';
 
@@ -16,6 +15,8 @@ class MainApp extends Component {
     super(props);
     this.loadData = this.loadData.bind(this);
     this.removePost = this.removePost.bind(this);
+    this.upCounter = this.upCounter.bind(this);
+    this.downCounter = this.downCounter.bind(this);
   }
 
   componentWillMount() {
@@ -23,19 +24,33 @@ class MainApp extends Component {
   }
 
   loadData(){
-    axios.get('https://jsonplaceholder.typicode.com/posts')
-    .then(response => Object.keys(response.data).map(index => response.data[index]))
+    api.posts.getAll()
+    .then(response => Object.keys(response.data).map(index => ({ ...response.data[index], counter: 0 }) ))
     .then(data => {
       this.props.actions.initialLoad(data);
     });
   }
 
   removePost(index) {
-    return () => {this.props.actions.removePost(index)};
+    return () => this.props.actions.removePost(index);
+  }
+
+  upCounter(index) {
+    return e => {
+      e.preventDefault();
+      this.props.actions.up(index)
+    };
+  }
+
+  downCounter(index) {
+    return e => {
+      e.preventDefault();
+      this.props.actions.down(index)
+    };
   }
 
   render() {
-    const showPosts = (this.props.posts ? <PostsArea onDelete={this.removePost} {...this.props}/> : null);
+    const showPosts = (this.props.posts ? <PostsArea onUp={this.upCounter} onDown={this.downCounter} onDelete={this.removePost} {...this.props}/> : null);
     return (
       <div className="App">
         <div className="App-header">
@@ -58,7 +73,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ initialLoad, removePost }, dispatch)
+    actions: bindActionCreators({ initialLoad, removePost, up, down }, dispatch)
   };
 }
 

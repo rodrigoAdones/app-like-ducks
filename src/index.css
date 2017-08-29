@@ -8,3 +8,8 @@ ul {
   list-style: none;
   text-align: left;
 }
+
+.btn {
+  padding: 1em;
+  text-decoration: none;
+}
