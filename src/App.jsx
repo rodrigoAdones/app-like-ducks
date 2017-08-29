@@ -5,8 +5,9 @@ import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
-import store from './redux/store';
-import actions from './redux/actions';
+import store from './ducks/store';
+// import actions from './redux/actions';
+import { initialLoad, removePost } from './ducks/modules/posts';
 
 import PostsArea from './components/PostsArea';
 
@@ -25,12 +26,12 @@ class MainApp extends Component {
     axios.get('https://jsonplaceholder.typicode.com/posts')
     .then(response => Object.keys(response.data).map(index => response.data[index]))
     .then(data => {
-      this.props.actions.initial(data);
+      this.props.actions.initialLoad(data);
     });
   }
 
   removePost(index) {
-    return () => {this.props.actions.remove(index)};
+    return () => {this.props.actions.removePost(index)};
   }
 
   render() {
@@ -57,12 +58,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators({ initialLoad, removePost }, dispatch)
   };
 }
 
 const WrappedApp = connect(mapStateToProps, mapDispatchToProps)(MainApp);
 
-const App = props => <Provider store={store}><WrappedApp {...props} /></Provider>;
+const App = () => <Provider store={store}><WrappedApp /></Provider>;
 
 export default App;
