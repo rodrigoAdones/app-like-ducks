@@ -1,4 +1,4 @@
-import actionCreator from '../actionCreator';
+import actionCreator from 'actionCreator';
 
 const LOAD = 'app-like-ducks/posts/LOAD';
 const REMOVE = 'app-like-ducks/posts/REMOVE';

@@ -5,8 +5,8 @@ import logo from './logo.svg';
 import './App.css';
 import api from './utils/api';
 
-import store from './ducks/store';
-import { initialLoad, removePost, up, down } from './ducks/modules/posts';
+import store from 'Redux/store';
+import { initialLoad, removePost, up, down } from 'Redux/modules/posts';
 
 import PostsArea from './components/PostsArea';
 

@@ -40,6 +40,8 @@ function getServedPath(appPackageJson) {
 
 // config after eject: we're in ./config/
 module.exports = {
+  appActionCreator: resolveApp('src/ducks/actionCreator.js'),
+  appRedux: resolveApp('src/ducks'),
   dotenv: resolveApp('.env'),
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
