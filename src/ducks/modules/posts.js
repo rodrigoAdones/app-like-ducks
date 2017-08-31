@@ -1,3 +1,5 @@
+import actionCreator from '../actionCreator';
+
 const LOAD = 'app-like-ducks/posts/LOAD';
 const REMOVE = 'app-like-ducks/posts/REMOVE';
 const UP_COUNTER = 'app-like-ducks/posts/UP_COUNTER';
@@ -10,23 +12,23 @@ const initialState = [];
 export default function reducer(state = initialState, action = {}) {
     switch(action.type) {
         case LOAD :
-            return state.concat(action.posts);
+            return state.concat(action.data);
         case REMOVE:
             return [
-                ...state.slice(0, action.index),
-                ...state.slice(action.index + 1)
+                ...state.slice(0, action.data),
+                ...state.slice(action.data + 1)
             ];
         case UP_COUNTER:
             return [
-                ...state.slice(0, action.index),
-                {...state[action.index], counter: state[action.index].counter + 1},
-                ...state.slice(action.index + 1)
+                ...state.slice(0, action.data),
+                {...state[action.data], counter: state[action.data].counter + 1},
+                ...state.slice(action.data + 1)
             ];
         case DOWN_COUNTER:
             return [
-                ...state.slice(0, action.index),
-                {...state[action.index], counter: state[action.index].counter - 1},
-                ...state.slice(action.index + 1)
+                ...state.slice(0, action.data),
+                {...state[action.data], counter: state[action.data].counter - 1},
+                ...state.slice(action.data + 1)
             ];
         default:
             return state;
@@ -35,30 +37,7 @@ export default function reducer(state = initialState, action = {}) {
 
 // Actions
 
-export function initialLoad(posts) {
-  return {
-    type: LOAD,
-    posts
-  };
-}
-
-export function removePost(index) {
-  return {
-    type: REMOVE,
-    index
-  };
-}
-
-export function up(index) {
-  return {
-    type: UP_COUNTER,
-    index
-  };
-}
-
-export function down(index) {
-  return {
-    type: DOWN_COUNTER,
-    index
-  };
-}
+export const initialLoad = actionCreator(LOAD);
+export const removePost = actionCreator(REMOVE);
+export const up = actionCreator(UP_COUNTER);
+export const down = actionCreator(DOWN_COUNTER);
